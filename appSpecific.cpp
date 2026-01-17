@@ -559,9 +559,9 @@ Auth_Name~~0~T~Optional user name for web page login
 Auth_Pass~~0~T~Optional web page password
 ST_SSID~~0~T~Wifi SSID name
 ST_Pass~~0~T~Wifi SSID password
-ST_gw~192.168.1.1~0~T~Router IP address
-ST_ip~192.168.1.162~0~T~Static IP address
-ST_ns1~192.168.1.1~0~T~DNS server
+ST_gw~~0~T~Router IP address
+ST_ip~~0~T~Static IP address
+ST_ns1~~0~T~DNS server
 ST_ns2~~0~T~Alt DNS server
 ST_sn~255.255.255.0~0~T~Router subnet
 allowAP~1~0~C~Allow simultaneous AP
