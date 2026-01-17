@@ -33,11 +33,12 @@
 #define DEBUG_MEM false // leave as false
 #define FLUSH_DELAY 0 // for debugging crashes
 #define DBG_ON false // esp debug output
+#define DBG_LVL ESP_LOG_ERROR // level if DBG_ON true: ESP_LOG_ERROR, ESP_LOG_WARN, ESP_LOG_INFO, ESP_LOG_DEBUG, ESP_LOG_VERBOSE
 #define DOT_MAX 50
 #define HOSTNAME_GRP 0
 
 #define APP_NAME "ESP-TuyaDevice" // max 15 chars
-#define APP_VER "1.8"
+#define APP_VER "1.9"
 
 #define HTTP_CLIENTS 2 // http, ws
 #define MAX_STREAMS 0
@@ -70,7 +71,7 @@
 #define INCLUDE_WEBDAV true  // webDav.cpp (WebDAV protocol)
 
 // to determine if newer data files need to be loaded
-#define CFG_VER 3
+#define CFG_VER 4
 
 #ifdef CONFIG_IDF_TARGET_ESP32S3 
 #define SERVER_STACK_SIZE (1024 * 8)
@@ -106,7 +107,7 @@
 #define UART_RTS UART_PIN_NO_CHANGE
 #define UART_CTS UART_PIN_NO_CHANGE
 #define TUYA_BAUD_RATE 9600 
-#define BUFF_LEN (UART_FIFO_LEN * 2) // bigger than biggest tuya message
+#define BUFF_LEN (UART_HW_FIFO_LEN(0) * 2) // bigger than biggest tuya message
 
 
 /******************** Function declarations *******************/                                        

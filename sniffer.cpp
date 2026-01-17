@@ -62,7 +62,7 @@ static void formatTuya(int uartNum, const byte* tuyaData, size_t tuyaDataLen, bo
   // only input data is processed and formatted, output is only formatted
   if (USE_SNIFFER) isProcessed = false; // no processing in sniffer mode
   static const char* typeStr[] = {"raw", "bool", "int", "str", "enum", "bmap"};
-  char formatted[BUFF_LEN] = {0, };
+  char formatted[BUFF_LEN] = {0};
   bool DP = false;
   sprintf(formatted, "%s > ", uart[uartNum].destName);
   for (int i = 0; i < tuyaDataLen; i++) {
@@ -133,7 +133,8 @@ static void formatTuya(int uartNum, const byte* tuyaData, size_t tuyaDataLen, bo
       }
     }
   }
-  LOG_INF("%s", formatted);
+  if (USE_SNIFFER) LOG_INF("%s", formatted);
+  else { LOG_VRB("%s", formatted); }
 }
 
 static void processTuyaByte(int uartNum, byte tuyaByte) {

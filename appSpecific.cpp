@@ -39,8 +39,10 @@ static void wsJsonSend(const char* keyStr, const char* valStr) {
   // output key val pair from MCU and send as json over websocket
   char jsondata[100];
   updateConfigVect(keyStr, valStr);
-  sprintf(jsondata, "{\"cfgGroup\":\"-1\", \"%s\":\"%s\"}", keyStr, valStr);
-  logPrint("%s\n", jsondata);
+  sprintf(jsondata, "\"cfgGroup\":\"-1\", \"%s\":\"%s\"", keyStr, valStr);
+  wsAsyncSendJson("ustatus", jsondata);
+  if (USE_SNIFFER) LOG_INF("%s", jsondata);
+  else { LOG_VRB("%s", jsondata); }
 }
 
 static void sendWifiStatus(bool demanded) {
@@ -508,7 +510,7 @@ void buildAppJsonString(bool filter) {
 
 esp_err_t appSpecificWebHandler(httpd_req_t *req, const char* variable, const char* value) {
   // build svg string to provide image for hub display
-  if (!strcmp(variable, "svg")) {
+  if (!strcmp(variable, "hub")) {
     const char* svgHtml = R"~(
         <svg width="200" height="200" xmlns="http://www.w3.org/2000/svg">
           <rect width="100%" height="100%" fill="lightgray"/>
@@ -554,7 +556,7 @@ AP_gw~~0~T~AP gateway
 AP_ip~~0~T~AP IP Address if not 192.168.4.1
 AP_sn~~0~T~AP subnet
 Auth_Name~~0~T~Optional user name for web page login
-Auth_Pass~~0~T~Optional password for web page login
+Auth_Pass~~0~T~Optional web page password
 ST_SSID~~0~T~Wifi SSID name
 ST_Pass~~0~T~Wifi SSID password
 ST_gw~192.168.1.1~0~T~Router IP address
@@ -565,7 +567,7 @@ ST_sn~255.255.255.0~0~T~Router subnet
 allowAP~1~0~C~Allow simultaneous AP
 formatIfMountFailed~0~0~C~Format file system on failure
 timezone~GMT0~0~T~Timezone string: tinyurl.com/TZstring
-logType~1~99~N~Output log selection
+logType~0~99~N~Output log selection
 alpha~0.2~98~N~na
 avgOn~0~2~D~Average heating time per day
 backLight~2~98~N~na

@@ -1,7 +1,7 @@
 // App to control a tuya device with a bespoke app by replacing
 // the on board wifi module with a pin compatible ESP32-C3
 //
-// Either the Tuya MCU or the ESP can be selected as controller.
+// Either the Tuya MCU or the ESP can be selected as controller. 
 // The controller manages the daily schedule and temperature settings.
 
 // s60sc 2022
@@ -18,12 +18,10 @@ void setup() {
 #ifdef DEV_ONLY
   devSetup();
 #endif
+
   // connect wifi or start config AP if router details not available
-  startWifi(); 
-  
-  startWebServer();
-  if (strlen(startupFailure)) LOG_ERR("%s", startupFailure);
-  else {
+  startNetwork();
+  if (startWebServer()) {
     prepUarts();
     delay(5000);
     startedUp = true;
