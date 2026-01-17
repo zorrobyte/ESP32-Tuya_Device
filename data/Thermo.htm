@@ -55,7 +55,7 @@
       }
       
       .hidden {
-        display: none
+        display: none;
       }
       
       progress {
@@ -308,6 +308,7 @@
         border:2px solid var(--itemBorder);
         overflow:auto;
         background: var(--inputBackground); 
+        white-space: pre-wrap;   /* preserves spaces, tabs, and newlines */
       }
       
       select {
@@ -757,24 +758,20 @@
       <div class="header">Monitor & Enter Tuya Commands</div>
       <br>
       <div class="grid-cols4a">
-        <div class="input-group" style="grid-column: span 2">
-          <fieldset> 
-          <legend id="selectLog">Select Log</legend> 
-          <div>
-            <label title="Display RTC RAM log" for="rtcram">RTC RAM</label>
-            <input class="local" id="rtcram" type="radio" name="logType" value="0">
-            <label title="Display Websocket log" for="websock">&nbsp;Websocket</label>
-            <input class="local" id="websock" type="radio" name="logType" value="1" checked>
-          </div>
-          </fieldset>
-        </div>
         <div class="input-group" id="dbg-group" style="align-items: center; grid-column: span 1">
           <label for="dbgVerbose" title="Set verbose logging">Verbose:</label>
           <div class="switch">
             <input id="dbgVerbose" type="checkbox">
             <label title="Outputs additional information to log" class="slider" for="dbgVerbose"></label>
           </div>
-        </div> 
+        </div>
+        <div>
+          <svg>
+            <rect class="buttonRect" tabindex="0"/>
+            <text id="showsys" class="midText">System</text>
+          </svg>
+        </div>
+        <br>
         <div style="grid-column: span 4"><br></div>      
         <div>
           <svg>
@@ -888,9 +885,7 @@
       
       let refreshInterval = 5000;
       let appClock = Math.ceil(Date.now() / 1000);
-      const appLogInit = 1;
-      const appHub = '/control?svg=1';
-            
+
       let isOn = true;
       let minTemp;
       let maxTemp;
@@ -914,10 +909,8 @@
             document.title = value;
             if (fromUser) sendControl(key, value);
           }
-          else if (key == "alertMsg") showAlert(value);
           else if (key == "clearLog") clearLog();
           else if (key == "refreshLog") getLog();
-          else if (key == "logType") { logType = value; sendControl(key, value); return; }
           else if (key == "refreshVal") refreshInterval = value * 1000; 
           else if (key == "clockUTC") { appClock = value; checkTime(value); }
           else if (key == "devHub") setDevHub(key, value);
@@ -1053,8 +1046,9 @@
       const doRefreshTimer = false;
       const doCustomSync = true;
       const doHeartbeat = true;
+      const doInitSSE = false;
  
-      const scriptFiles = ['/web?common.js', 'C:/MyStuff/Arduino/CommonMaster/Latest/common.js']; 
+      const scriptFiles = ['/web?common.js', '../../CommonMaster/Latest/common.js'];
       for (let i = 0; i < scriptFiles.length; i++) {
         const scriptElement = document.createElement('script');
         scriptElement.src = scriptFiles[i];
